@@ -1,0 +1,25 @@
+name: ".NET Test report"
+on:
+  workflow_run:
+    workflows: 
+      - ".NET"
+    types: 
+      - completed
+permissions:
+  contents: read
+  actions: read
+  checks: write
+jobs:
+  Report:
+    runs-on: ubuntu-latest
+    environment: testing
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+      - uses: dorny/test-reporter@v1
+        with:
+          artifact: test-results
+          name: JUnit
+          path: '*/*.xml'
+          reporter: java-junit

@@ -1,0 +1,15 @@
+.vs
+src/CrontabRegistry/Application/bin
+src/CrontabRegistry/Application/obj
+src/CrontabRegistry/Domain/bin
+src/CrontabRegistry/Domain/obj
+src/CrontabRegistry/Infrastructure/bin
+src/CrontabRegistry/Infrastructure/obj
+tests/Unit/obj
+tests/Unit/bin
+tests/Integration/obj
+tests/Integration/bin
+.env
+.env.production
+docker-artifact
+.linter-results

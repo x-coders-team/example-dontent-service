@@ -1,0 +1,22 @@
+# ##################################################### #
+# This is Dockerfile use for development                 #
+# ##################################################### #
+FROM mcr.microsoft.com/dotnet/sdk:6.0 as build
+ARG MYSERVICE_PROJECT_FILE_CSPROJ=./src/CrontabRegistry/Application/Application.csproj
+ARG MYSERVICE_PROJECT_START_DIRECTORY=/application/src/CrontabRegistry/Application/
+
+ENV ASPNETCORE_URLS=http://+:4500
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true
+ENV DOTENT_APP_CrontabRegistryDatabaseOptions__ConnectionString=${DOTENT_APP_CrontabRegistryDatabaseOptions__ConnectionString}
+ENV ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+ENV MYSERVICE_PROJECT_FILE_CSPROJ="${MYSERVICE_PROJECT_FILE_CSPROJ}"
+ENV MYSERVICE_PROJECT_START_DIRECTORY="${MYSERVICE_PROJECT_START_DIRECTORY}"
+
+WORKDIR /application
+COPY . .
+COPY ./docker/scripts /scripts
+
+RUN chmod 0755 -R /scripts/*.sh;
+
+EXPOSE 4500
+ENTRYPOINT ["/scripts/entrypoint.development.sh"]

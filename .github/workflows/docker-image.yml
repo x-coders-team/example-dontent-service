@@ -1,0 +1,24 @@
+name: Docker image
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    environment: testing
+    steps:
+        - uses: actions/checkout@v3
+        - name: Prepare docker image
+          run: docker image build -f ./docker/Dockerfile -t crontab-registry:production .
+        - name: Save image to file
+          run: |
+            mkdir ./docker-artifact
+            docker image save crontab-registry:production > ./docker-artifact/docker-artifact_production.tar
+        - uses: actions/upload-artifact@v4
+          name: Upload Artifact
+          with:
+            name: docker-artifact
+            path: docker-artifact
+            if-no-files-found: warn

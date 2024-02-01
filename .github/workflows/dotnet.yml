@@ -1,0 +1,40 @@
+name: .NET
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  Testing:
+    runs-on: ubuntu-latest
+    environment: testing
+    steps:
+        - uses: actions/checkout@v3
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v3
+          with:
+            dotnet-version: 6.0.x
+        - name: Restore dependencies
+          run: dotnet restore
+        - name: Build
+          run: dotnet build --no-restore
+        - name: Set secrets
+          env:
+            MONGODB_CONNECTION_STRING: ${{ secrets.CRONTABREGISTRYDATABASEOPTIONS_CONNECTIONSTRING }}
+          run: dotnet user-secrets set "CrontabRegistryDatabaseOptions:ConnectionString" "$MONGODB_CONNECTION_STRING" --project ./src/CrontabRegistry/Application/Application.csproj
+        - name: Check code style & format
+          run: dotnet format  --verify-no-changes --report ./.linter-results/dotnet/ -v diag
+        - name: Run unit tests
+          if: success() || failure()
+          run: dotnet test --no-build --verbosity normal --logger 'junit' --results-directory './.test-results/unit' ./tests/Unit/Unit.csproj;
+        - name: Run integration tests
+          if: success() || failure()
+          run: dotnet test --no-build --verbosity normal --logger 'junit' --results-directory './.test-results/integration' ./tests/Integration/Integration.csproj;
+        - name: Publish artifacts
+          uses: actions/upload-artifact@v3
+          if: success() || failure()
+          with: 
+            name: test-results
+            path: |
+              .test-results/unit/TestResults.xml
+              .test-results/integration/TestResults.xml
