@@ -6,9 +6,8 @@ namespace CrontabRegistry.Application.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
-    {
-        private readonly ILogger<WeatherForecastController> _logger;
+    public class WeatherForecastController : ControllerBase{
+        private readonly ILogger<WeatherForecastController>  _logger ;
         private readonly IWeatherForecastService _weatherForecastService;
 
         public WeatherForecastController(
@@ -17,13 +16,11 @@ namespace CrontabRegistry.Application.Controllers
         )
         {
             _logger = logger;
-            _weatherForecastService = weatherForecastService;
-        }
-
+            _weatherForecastService = weatherForecastService;}
         [HttpGet(Name = "GetWeatherForecast")]
-        public async Task<IEnumerable<WeatherForecastModel>> Get()
-        {
+        public async Task <IEnumerable<WeatherForecastModel>>Get (){
             return await _weatherForecastService.GenerateWeatherForecast();
         }
     }
 }
+
