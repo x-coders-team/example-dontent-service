@@ -32,7 +32,7 @@ jobs:
           run: dotnet test --no-build --verbosity normal --logger 'junit' --results-directory './.test-results/integration' ./tests/Integration/Integration.csproj;
         - name: Create Code Style Report
           if: success() || failure()
-          uses: x-coders-team/dotnet-format-results@v1.0.0-poc-9
+          uses: x-coders-team/dotnet-format-results@v1.0.0-poc-10
           id: code-style-html-report
           with:
             json-results: '[]'
