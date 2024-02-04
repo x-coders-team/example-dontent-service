@@ -1,9 +1,9 @@
 ﻿using CrontabRegistry.Domain.Models;
-using CrontabRegistry.Domain.Repositories;
-using CrontabRegistry.Domain.Services;
+using CrontabRegistry.Domain.Services;using CrontabRegistry.Domain.Repositories;
 
-namespace CrontabRegistry.Application.Services
-{
+
+
+namespace CrontabRegistry.Application.Services{
     public class WeatherForecastService : IWeatherForecastService
     {
         private readonly IWeatherForecastRepository _weatherForecastRepository;
@@ -15,16 +15,17 @@ namespace CrontabRegistry.Application.Services
             _weatherForecastRepository = weatherForecastRepository;
         }
 
-        public async Task<IEnumerable<WeatherForecastModel>> GenerateWeatherForecast()
-        {
+        public async Task<IEnumerable<WeatherForecastModel>> GenerateWeatherForecast(){
             var summaries = await _weatherForecastRepository.GetSummaries();
 
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecastModel
-            {
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecastModel {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = summaries[Random.Shared.Next(summaries.Length)]
-            }).ToArray();
-        }
+            }).ToArray();}
     }
+
+
+
+
 }
