@@ -38,6 +38,8 @@ jobs:
           if: success() || failure()
           uses: x-coders-team/dotnet-format-results@beta
           id: code-style-html-report
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             json-results: '[]'
             runner-workdir: ${{ github.workspace }}
